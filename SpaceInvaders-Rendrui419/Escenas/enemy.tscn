@@ -1,0 +1,110 @@
+[gd_scene load_steps=9 format=3 uid="uid://b725ygeti0bg4"]
+
+[ext_resource type="Texture2D" uid="uid://spu8v353dbvi" path="res://Sprites/alien1.png" id="1_kqxvk"]
+[ext_resource type="Script" path="res://Escenas/enemy.gd" id="1_o6nd2"]
+[ext_resource type="AudioStream" uid="uid://c7bq5l7k6lr47" path="res://sfx/explosion.wav" id="3_etpd1"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ykgrh"]
+size = Vector2(12, 8)
+
+[sub_resource type="Animation" id="Animation_ooq61"]
+resource_name = "Destruido"
+length = 0.5
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [2]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"eliminar"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_h0ki0"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
+[sub_resource type="Animation" id="Animation_ftetw"]
+resource_name = "Vivo"
+loop_mode = 1
+step = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [0, 1]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_jvd8v"]
+_data = {
+"Destruido": SubResource("Animation_ooq61"),
+"RESET": SubResource("Animation_h0ki0"),
+"Vivo": SubResource("Animation_ftetw")
+}
+
+[node name="Enemy" type="CharacterBody2D" groups=["Aliens"]]
+script = ExtResource("1_o6nd2")
+metadata/_edit_group_ = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_kqxvk")
+hframes = 3
+frame = 1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(0.92, 1)
+shape = SubResource("RectangleShape2D_ykgrh")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_jvd8v")
+}
+autoplay = "Vivo"
+
+[node name="TimerMovimiento" type="Timer" parent="."]
+wait_time = 0.5
+
+[node name="SpawnPoint" type="Marker2D" parent="."]
+position = Vector2(0, 4.215)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_etpd1")
+volume_db = -7.42
+
+[connection signal="timeout" from="TimerMovimiento" to="." method="_on_timer_movimiento_timeout"]

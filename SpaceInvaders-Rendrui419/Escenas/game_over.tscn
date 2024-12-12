@@ -1,0 +1,26 @@
+[gd_scene load_steps=3 format=3 uid="uid://dhls1veuesf30"]
+
+[ext_resource type="Script" path="res://Escenas/game_over.gd" id="1_qbipm"]
+[ext_resource type="FontFile" uid="uid://r6caj6evbnws" path="res://Escenas/fonts/atari-classic-font/AtariClassic-gry3.ttf" id="1_qr8dt"]
+
+[node name="GameOver" type="Node2D"]
+script = ExtResource("1_qbipm")
+
+[node name="TextoGameOver" type="Label" parent="."]
+offset_left = 40.0
+offset_top = 92.0
+offset_right = 184.0
+offset_bottom = 115.0
+theme_override_fonts/font = ExtResource("1_qr8dt")
+text = "GAME OVER"
+horizontal_alignment = 1
+
+[node name="BotonReintentar" type="Button" parent="."]
+offset_left = 28.0
+offset_top = 160.0
+offset_right = 196.0
+offset_bottom = 191.0
+theme_override_fonts/font = ExtResource("1_qr8dt")
+text = "REINTENTAR"
+
+[connection signal="pressed" from="BotonReintentar" to="." method="_on_boton_reintentar_pressed"]
